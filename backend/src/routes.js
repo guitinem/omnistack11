@@ -31,6 +31,9 @@ routes.post('/incidents', celebrate({
         title: Joi.string().required(),
         description: Joi.string().required(),
         value: Joi.number().positive()
+    }),
+    [Segments.HEADERS]: Joi.object().keys({
+        authorization: Joi.string().required(),
     })
 }),IncidentController.create);
 
@@ -57,6 +60,10 @@ routes.get('/profile', celebrate({
 /**
  * Session routes
  */
-routes.post('/sessions', SessionController.create);
+routes.post('/sessions', celebrate({
+    [Segments.BODY]: Joi.object({
+        id: Joi.string().required()
+    })
+}), SessionController.create);
 
 module.exports = routes;
